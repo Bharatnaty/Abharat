@@ -13,16 +13,27 @@ import {
   AddShoppingCart,
   RemoveShoppingCart,
 } from "@material-ui/icons";
+import { addMovies , addbasket,addlikemovies } from "@/store";
+
+interface RootState {
+  Movies:{
+    title:string;
+    basket:boolean;
+    liked:boolean;
+  }[];
+  Basket:string[];
+  LikedMovies:string[];
+}
 export default function Home() {
   const [movieTitle, setMovietitle] = useState("");
   const dispatch = useDispatch();
   const movies = useSelector(
-    (state: { Movies: { title: string; basket: boolean; liked: boolean }[] }) =>
+    (state: RootState) =>
       state.Movies
   );
-  const basket = useSelector((state: { Basket: string[] }) => state.Basket);
+  const basket = useSelector((state: RootState) => state.Basket);
   const likedmovies = useSelector(
-    (state: { LikedMovies: string[] }) => state.LikedMovies
+    (state: RootState) => state.LikedMovies
   );
 
   const AddMovie = () => {
@@ -32,17 +43,17 @@ export default function Home() {
       liked: false,
     };
     if (movieTitle !== "") {
-      dispatch({ type: "ADD_MOVIE", payload: NewMovie });
+      dispatch(addMovies(NewMovie));
       setMovietitle("");
     }
   };
 
   const AddLIKE = (data: string) => {
-    dispatch({ type: "LIKED_MOVIES", payload: data });
+    dispatch(addlikemovies(data));
   };
 
   const AddBASKET = (data: string) => {
-    dispatch({ type: "ADD_BASKET", payload: data });
+    dispatch(addbasket(data));
   };
   return (
     <div className="container">
